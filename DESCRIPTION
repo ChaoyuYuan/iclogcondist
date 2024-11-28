@@ -1,0 +1,12 @@
+Package: iclogcondist
+Type: Package
+Title: Nonparametric Estimation for a Log-concave Distribution Function with Interval-censored Data
+Version: 1.0.0
+Author: Chi Wing Chu, Hok Kan Ling and Chaoyu Yuan
+Maintainer: Chi Wing Chu <george.chu@cityu.edu.hk>, Hok Kan Ling <brian.ling@queensu.ca> and Chaoyu Yuan <chaoyu.yuan@columbia.edu>
+Description: We consider the nonparametric maximum likelihood estimation of the underlying distribution function, assuming log-concavity, based on mixed-case interval-censored data. 
+License: GPL-3
+Imports: Rcpp, RcppArmadillo, flexsurv, dplyr, ggplot2, icenReg, monotone, tidyr, fdrtool
+LinkingTo: Rcpp, RcppArmadillo
+RoxygenNote: 7.3.2
+Encoding: UTF-8
