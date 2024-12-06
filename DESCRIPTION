@@ -1,12 +1,39 @@
 Package: iclogcondist
 Type: Package
-Title: Nonparametric Estimation for a Log-concave Distribution Function with Interval-censored Data
-Version: 1.0.0
-Author: Chi Wing Chu, Hok Kan Ling and Chaoyu Yuan
-Maintainer: Chaoyu Yuan <chaoyu.yuan@columbia.edu>
-Description: We consider the nonparametric maximum likelihood estimation of the underlying distribution function, assuming log-concavity, based on mixed-case interval-censored data. 
+Title: Log-Concave Distribution Estimation with Interval-Censored Data
+Version: 1.0.1
+Authors@R: c(
+    person(
+        given = c("Chi", "Wing"),
+        family = "Chu",
+        role = "aut",
+        email = "george.chu@cityu.edu.hk"
+    ),
+    person(
+        given = c("Hok", "Kan"),
+        family = "Ling",
+        role = "aut",
+        email = "brian.ling@queensu.ca"
+    ),
+    person(
+        given = "Chaoyu",
+        family = "Yuan",
+        role = c("aut", "cre"),
+        email = "chaoyu.yuan@columbia.edu"
+    )
+    )
+Description: We consider the non-parametric maximum likelihood estimation of the underlying distribution function, assuming log-concavity, based on mixed-case interval-censored data. The algorithm implemented is base on Chi Wing Chu, Hok Kan Ling and Chaoyu Yuan (2024, <doi:10.48550/arXiv.2411.19878>).
 License: GPL-3
-Imports: Rcpp, RcppArmadillo, flexsurv, dplyr, ggplot2, icenReg, monotone, tidyr, fdrtool
-LinkingTo: Rcpp, RcppArmadillo
+Imports: 
+    Rcpp, 
+    flexsurv, 
+    ggplot2, 
+    icenReg, 
+    monotone, 
+    fdrtool
+LinkingTo: 
+    Rcpp, 
+    RcppArmadillo
 RoxygenNote: 7.3.2
 Encoding: UTF-8
+Depends: R (>= 3.5.0)

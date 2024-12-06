@@ -29,9 +29,3 @@ The R group consists of samples with infinity right interval time.}
 \description{
 This function processes interval-censored data and prepares various components needed for model fitting, including unique time points, censoring intervals, and weights.
 }
-\examples{
-# Example usage
-data(lgnm)
-result <- data_prep(X = lgnm)
-print(result$tau)
-}

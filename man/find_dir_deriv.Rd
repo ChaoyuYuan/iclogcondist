@@ -19,10 +19,3 @@ This function computes the directional derivatives for the active set algorithm 
 of the distribution function under log-concavity with interval-censored data.
 The calculation takes advantage of the specific structure of the basis matrix, making it efficient to compute in \code{O(n)} time complexity.
 }
-\examples{
-# Example usage with simple vectors
-diff_tau <- c(0.5, 1.0, 1.5)
-first_order <- c(2.0, 1.5, 1.0)
-dir_deriv <- find_dir_deriv(diff_tau, first_order)
-print(dir_deriv)
-}

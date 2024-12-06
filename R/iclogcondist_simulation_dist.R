@@ -9,6 +9,7 @@
 #' @param scale A positive numeric value representing the scale parameter of the Weibull distribution. Default is \code{1}.
 #' @param upper_bound A positive numeric value indicating the upper truncation point. Default is \code{Inf} (no truncation).
 #' @return A numeric vector of \code{n} random samples from the truncated Weibull distribution.
+#' @importFrom stats rweibull runif
 #' @export
 #' @examples
 #' # Generate 10 random samples from a truncated Weibull distribution
@@ -40,6 +41,7 @@ rtweibull <- function(n, shape = 1, scale = 1, upper_bound = Inf) {
 #' @param scale A positive numeric value representing the scale parameter of the Weibull distribution. Default is \code{1}.
 #' @param upper_bound A positive numeric value indicating the upper truncation point. Default is \code{Inf} (no truncation).
 #' @return A numeric vector of the CDF values of the truncated Weibull distribution at \code{x}.
+#' @importFrom stats pweibull
 #' @export
 #' @examples
 #' # Evaluate the CDF at x = 2 for a truncated Weibull distribution
@@ -70,6 +72,7 @@ ptweibull <- function(x, shape = 1, scale = 1, upper_bound = Inf) {
 #' @param scale A positive numeric value representing the scale parameter of the Weibull distribution. Default is \code{1}.
 #' @param upper_bound A positive numeric value indicating the upper truncation point. Default is \code{Inf} (no truncation).
 #' @return A numeric vector of quantiles corresponding to the given probabilities in \code{q}.
+#' @importFrom stats qweibull pweibull uniroot
 #' @export
 #' @examples
 #' # Calculate the 0.5 quantile of a truncated Weibull distribution
@@ -173,6 +176,7 @@ ptllogis <- function(x, shape = 1, scale = 1, upper_bound = Inf) {
 #' @param upper_bound A positive numeric value indicating the upper truncation point. Default is \code{Inf} (no truncation).
 #' @return A numeric vector of quantiles corresponding to the given probabilities in \code{q}.
 #' @importFrom flexsurv pllogis
+#' @importFrom stats uniroot
 #' @export
 #' @examples
 #' # Calculate the 0.5 quantile of a truncated log-logistic distribution
@@ -211,6 +215,7 @@ qtllogis <- function(q, shape = 1, scale = 1, upper_bound = Inf) {
 #' @param sdlog A positive numeric value representing the standard deviation of the log-normal distribution on the log scale. Default is \code{1}.
 #' @param upper_bound A positive numeric value indicating the upper truncation point. Default is \code{Inf} (no truncation).
 #' @return A numeric vector of \code{n} random samples from the truncated log-normal distribution.
+#' @importFrom stats  rlnorm
 #' @export
 #' @examples
 #' # Generate 10 random samples from a truncated log-normal distribution
@@ -244,6 +249,7 @@ rtlnorm <- function(n, meanlog = 0, sdlog = 1, upper_bound = Inf) {
 #' @param sdlog A positive numeric value representing the standard deviation of the log-normal distribution on the log scale. Default is \code{1}.
 #' @param upper_bound A positive numeric value indicating the upper truncation point. Default is \code{Inf} (no truncation).
 #' @return A numeric vector of the CDF values of the truncated log-normal distribution at \code{x}.
+#' @importFrom stats plnorm
 #' @export
 #' @examples
 #' # Evaluate the CDF at x = 2 for a truncated log-normal distribution
@@ -274,6 +280,7 @@ ptlnorm <- function(x, meanlog = 0, sdlog = 1, upper_bound = Inf) {
 #' @param sdlog A positive numeric value representing the standard deviation of the log-normal distribution on the log scale. Default is \code{1}.
 #' @param upper_bound A positive numeric value indicating the upper truncation point. Default is \code{Inf} (no truncation).
 #' @return A numeric vector of quantiles corresponding to the given probabilities in \code{q}.
+#' @importFrom stats qlnorm plnorm uniroot
 #' @export
 #' @examples
 #' # Calculate the 0.5 quantile of a truncated log-normal distribution

@@ -20,16 +20,3 @@ A list containing two components:
 This function finds the unique rows of a given matrix and calculates the frequency (weight) of each unique row. 
 It returns both the unique rows and the weights (the number of occurrences of each row).
 }
-\examples{
-# Example with a simple matrix
-X <- matrix(c(1, 2, 1, 2, 3, 4, 1, 2), nrow = 4, byrow = TRUE)
-unique_X_weight(X)
-$unique_X
-#      [,1] [,2]
-# [1,]    1    2
-# [2,]    3    4
-# 
-# $weight
-# [1] 3 1
-
-}

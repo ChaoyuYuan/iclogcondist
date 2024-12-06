@@ -23,13 +23,3 @@ using the provided event times and censoring (survey) times.
 Each individual's event time is either left-censored or right-censored at their survey time,
 depending on whether the event has occurred by the survey time.
 }
-\examples{
-event_times <- c(2, 4, 5, 7)
-survey_times <- c(3, 3, 6, 8)
-current_status_X(event_times, survey_times)
-#      [,1] [,2]
-# [1,]    0    3
-# [2,]    3  Inf
-# [3,]    0    6
-# [4,]    0    8
-}

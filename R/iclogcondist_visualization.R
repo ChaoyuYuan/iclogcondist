@@ -20,9 +20,16 @@
 #' @examples
 #' # Example usage
 #' data(lgnm)
-#' fit_LCMLE <- ic_LCMLE(X)
-#' fit_UMLE <- ic_UMLE(X)
-#' iclogcondist_visualization(X = lgnm, range = c(0, 10), fit_list = list("UMLE" = fit_UMLE,"LCMLE" = fit_LCMLE))
+#' fit_LCMLE <- ic_LCMLE(lgnm)
+#' fit_UMLE <- ic_UMLE(lgnm)
+#' iclogcondist_visualization(
+#'   X = lgnm,
+#'   range = c(0, 10),
+#'   fit_list = list(
+#'     "UMLE" = fit_UMLE,
+#'     "LCMLE" = fit_LCMLE
+#'   )
+#' )
 #'
 #' @export
 iclogcondist_visualization <- function(X, range = NA, fit_list = list(), true_dist = NA) {
@@ -72,12 +79,12 @@ iclogcondist_visualization <- function(X, range = NA, fit_list = list(), true_di
   # Add true_data layer if available
   if (plot_true_data) {
     p_logF <- p_logF +
-      geom_line(data = true_data, aes(x = tau, y = true_values_log, color = "True Distribution"), linewidth = 1)
+      geom_line(data = true_data, aes(x = .data$tau, y = .data$true_values_log, color = "True Distribution"), linewidth = 1)
   }
   
   # Add fit_data_log layer
   p_logF <- p_logF +
-    geom_line(data = fit_data_log, aes(x = tau, y = log_F_est, color = fit_name), linewidth = 1)
+    geom_line(data = fit_data_log, aes(x = .data$tau, y = .data$log_F_est, color = .data$fit_name), linewidth = 1)
   
   # Create ggplot for F(t)
   p_F <- ggplot() +
@@ -89,12 +96,12 @@ iclogcondist_visualization <- function(X, range = NA, fit_list = list(), true_di
   # Add true_data layer if available
   if (plot_true_data) {
     p_F <- p_F +
-      geom_line(data = true_data, aes(x = tau, y = true_values, color = "True Distribution"), linewidth = 1)
+      geom_line(data = true_data, aes(x = .data$tau, y = .data$true_values, color = "True Distribution"), linewidth = 1)
   }
   
   # Add fit_data_F layer
   p_F <- p_F +
-    geom_line(data = fit_data_F, aes(x = tau, y = F_est, color = fit_name), linewidth = 1)
+    geom_line(data = fit_data_F, aes(x = .data$tau, y = .data$F_est, color = .data$fit_name), linewidth = 1)
   
   # Return the plots as a list
   return(list(logF_plot = p_logF, F_plot = p_F))
@@ -113,9 +120,8 @@ iclogcondist_visualization <- function(X, range = NA, fit_list = list(), true_di
 #' @param log Logical; if \code{TRUE}, plots the log cumulative distribution function \code{logF(t)}. 
 #'            If \code{FALSE}, plots \code{F(t)}. Default is \code{FALSE}.
 #' @param ... Additional arguments passed to the plotting function.
+#' @return An invisible \code{ggplot} object representing the plot. The plot is also displayed in the current graphics device.
 #' @import ggplot2
-#' @import dplyr
-#' @import tidyr
 #' @examples
 #' # Example usage with ic_UMLE, ic_LCM_UMLE, and ic_LCMLE
 #' data(lgnm)
@@ -144,15 +150,29 @@ plot.iclogcondist <- function(x, log = FALSE, ...) {
   
   # Helper function to prepare plot data with intermediate points
   prepare_plot_data <- function(df, y_col, y_lead_col) {
-    df %>%
-      mutate(tau_lead = lead(tau), y_lead = lead(!!sym(y_lead_col))) %>%
-      filter(!is.na(tau_lead)) %>%
-      rowwise() %>%
-      do(data.frame(
-        tau = c(.$tau, .$tau_lead, .$tau_lead),
-        y_value = c(.[[y_col]], .[[y_col]], .$y_lead)
-      )) %>%
-      ungroup()
+    # Add lead columns manually
+    df$tau_lead <- c(df$tau[-1], NA)
+    df$y_lead <- c(df[[y_lead_col]][-1], NA)
+    
+    # Filter rows where lead values are NA
+    df <- df[!is.na(df$tau_lead), ]
+    
+    # Initialize empty lists to store tau and y_value sequences
+    tau_list <- list()
+    y_value_list <- list()
+    
+    # Loop through each row to create intermediate points
+    for (i in seq_len(nrow(df))) {
+      tau_list[[i]] <- c(df$tau[i], df$tau_lead[i], df$tau_lead[i])
+      y_value_list[[i]] <- c(df[[y_col]][i], df[[y_col]][i], df$y_lead[i])
+    }
+    
+    # Combine results into a single data frame
+    tau <- unlist(tau_list)
+    y_value <- unlist(y_value_list)
+    
+    result <- data.frame(tau = tau, y_value = y_value)
+    return(result)
   }
   
   if (log) {
@@ -167,8 +187,8 @@ plot.iclogcondist <- function(x, log = FALSE, ...) {
   if (class(x)[2] == "ic_UMLE") {
     plot_data <- prepare_plot_data(df_est, y_value, y_value)
     p <- ggplot() +
-      geom_line(data = plot_data, aes(x = tau, y = y_value), color = "blue") +
-      geom_point(data = df_est, aes(x = tau, y = !!sym(y_value)), color = "red") +
+      geom_line(data = plot_data, aes(x = .data$tau, y = .data$y_value), color = "blue") +
+      geom_point(data = df_est, aes(x = .data$tau, y = .data[[y_value]]), color = "red") +
       labs(
         title = paste(class(x)[2], "Estimate of", y_label),
         x = "t",
@@ -177,8 +197,8 @@ plot.iclogcondist <- function(x, log = FALSE, ...) {
       theme_minimal()
   } else {
     p <- ggplot() +
-      geom_line(data = df_est, aes(x = tau, y = !!sym(y_value)), color = "blue", linewidth = 1.2) +
-      geom_point(data = df_node, aes(x = tau, y = !!sym(y_value)), color = "red") +
+      geom_line(data = df_est, aes(x = .data$tau, y = .data[[y_value]]), color = "blue", linewidth = 1.2) +
+      geom_point(data = df_node, aes(x = .data$tau, y = .data[[y_value]]), color = "red") +
       labs(
         title = paste(class(x)[2], "Estimate of", y_label),
         x = "t",

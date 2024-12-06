@@ -7,7 +7,7 @@
 neg_log_like(x, weight, li, ri, L_Rc, Lc_R, Lc_Rc, type = "", tau_no_Inf)
 }
 \arguments{
-\item{x}{A numeric vector of parameter estimates (can be in terms of \code{eta}, \code{phi}, or \code{F}).}
+\item{x}{A numeric vector of parameter estimates (can be in terms of \code{phi}, or \code{F}).}
 
 \item{weight}{A numeric vector of weights for the observations.}
 
@@ -23,7 +23,7 @@ The R group consists of samples with infinity right interval time.}
 
 \item{Lc_Rc}{Indices of observations where the event is in the intersection of the complement of L group and the complement of R group.}
 
-\item{type}{A character string indicating the parameterization of \code{x}. Options are \code{"eta"} (log of F), \code{"phi"}, or \code{"F"}.}
+\item{type}{A character string indicating the parameterization of \code{x}. Options are \code{"phi"} (log of F), or \code{"F"}.}
 
 \item{tau_no_Inf}{A numeric vector of unique time points excluding infinity.}
 }
@@ -32,8 +32,4 @@ The negative log-likelihood value.
 }
 \description{
 This function computes the negative log-likelihood of an interval-censored model based on the specified parameterization.
-}
-\examples{
-# Assume necessary inputs are generated
-log_like <- neg_log_like(x, weight, li, ri, L_Rc, Lc_R, Lc_Rc, "phi", tau_no_Inf)
 }
