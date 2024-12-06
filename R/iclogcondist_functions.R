@@ -10,18 +10,6 @@
 #'   \item{weight}{An integer vector containing the frequency (weight) of each unique row.}
 #' }
 #'
-#' @examples
-#' # Example with a simple matrix
-#' X <- matrix(c(1, 2, 1, 2, 3, 4, 1, 2), nrow = 4, byrow = TRUE)
-#' unique_X_weight(X)
-#' $unique_X
-#' #      [,1] [,2]
-#' # [1,]    1    2
-#' # [2,]    3    4
-#' # 
-#' # $weight
-#' # [1] 3 1
-#' 
 unique_X_weight <-  function(X) {
   X_sorted <- X[do.call(order, as.data.frame(X)), , drop = FALSE]
   unique_indices <- !duplicated(X_sorted)
@@ -52,11 +40,6 @@ unique_X_weight <-  function(X) {
 #'   \item{weight}{Weights for each unique interval.}
 #'   \item{X}{Processed matrix of interval-censored data with unique rows.}
 #' }
-#' @examples
-#' # Example usage
-#' data(lgnm)
-#' result <- data_prep(X = lgnm)
-#' print(result$tau)
 data_prep <- function(X) {
   temp <- unique_X_weight(X)
   X <- temp$unique_X
@@ -109,19 +92,6 @@ data_prep <- function(X) {
 #' }
 #' @import icenReg
 #'
-#' @examples
-#' # Example usage with default LCM initialization
-#' X <- matrix(c(0, 2, 1, 3, 2, Inf), ncol = 2, byrow = TRUE)
-#' init_vals <- initial_values(X)
-#' print(init_vals$phi_hat)
-#' 
-#' # Example usage with MLE initialization
-#' init_vals <- initial_values(X, initial = "MLE")
-#' print(init_vals$phi_hat)
-#'
-#' # Example usage with custom numeric vector
-#' init_vals <- initial_values(X, initial = c(-1, -2, -3))
-#' print(init_vals$phi_hat)
 initial_values <- function(X, initial = "LCM") {
   fit_MLE <- ic_UMLE(X)
   fit_LCM <- ic_LCM_UMLE(X)
@@ -154,7 +124,7 @@ initial_values <- function(X, initial = "LCM") {
 #'
 #' This function computes the negative log-likelihood of an interval-censored model based on the specified parameterization.
 #'
-#' @param x A numeric vector of parameter estimates (can be in terms of \code{eta}, \code{phi}, or \code{F}).
+#' @param x A numeric vector of parameter estimates (can be in terms of \code{phi}, or \code{F}).
 #' @param weight A numeric vector of weights for the observations.
 #' @param li A numeric vector of indices corresponding to the left bounds of the intervals in \code{tau_no_Inf}.
 #' @param ri A numeric vector of indices corresponding to the right bounds of the intervals in \code{tau_no_Inf}.
@@ -163,19 +133,12 @@ initial_values <- function(X, initial = "LCM") {
 #' The R group consists of samples with infinity right interval time.
 #' @param Lc_R Indices of observations where the event is in the intersection of the complement of L group and R group.
 #' @param Lc_Rc Indices of observations where the event is in the intersection of the complement of L group and the complement of R group.
-#' @param type A character string indicating the parameterization of \code{x}. Options are \code{"eta"} (log of F), \code{"phi"}, or \code{"F"}.
+#' @param type A character string indicating the parameterization of \code{x}. Options are \code{"phi"} (log of F), or \code{"F"}.
 #' @param tau_no_Inf A numeric vector of unique time points excluding infinity.
 #' @return The negative log-likelihood value.
 #' 
-#' @examples
-#' # Assume necessary inputs are generated
-#' log_like <- neg_log_like(x, weight, li, ri, L_Rc, Lc_R, Lc_Rc, "phi", tau_no_Inf)
 neg_log_like <- function(x, weight, li, ri, L_Rc, Lc_R, Lc_Rc, type = "", tau_no_Inf) {
-  if (type == "eta") {
-    eta <- x
-    phi <- eta_to_phi_cpp(eta, tau_no_Inf)
-    F <- exp(phi)
-  } else if (type == "phi") {
+  if (type == "phi") {
     phi <- x
     F <- exp(phi)
   } else if (type == "F") {
@@ -202,12 +165,6 @@ neg_log_like <- function(x, weight, li, ri, L_Rc, Lc_R, Lc_Rc, type = "", tau_no
 #' @param first_order A numeric vector representing the first-order derivatives at each time point.
 #' @return A numeric vector of length \code{length(diff_tau) + 1} representing the directional derivatives for the active set algorithm.
 #'
-#' @examples
-#' # Example usage with simple vectors
-#' diff_tau <- c(0.5, 1.0, 1.5)
-#' first_order <- c(2.0, 1.5, 1.0)
-#' dir_deriv <- find_dir_deriv(diff_tau, first_order)
-#' print(dir_deriv)
 find_dir_deriv <- function(diff_tau, first_order) {
   m <- length(diff_tau) + 1
   dir_deriv <- rep(0, m)
@@ -301,9 +258,26 @@ get_F_at_x.iclogcondist <- function(object, x = NA, log = FALSE, ...) {
 
 #' Generic Function to compute F at X
 #'
-#' This is a generic function to compute \eqn{F(x)} for object class \code{iclogcondist}. For usage details, please refer to function \code{get_F_at_x.iclogcondist}
+#' Computes the value of the function \eqn{F(x)} for a given object of class \code{iclogcondist}. 
+#' This is a generic function to compute \eqn{F(x)} for object class \code{iclogcondist}. 
+#' For usage details, please refer to function \code{get_F_at_x.iclogcondist}
+#'
 #' @param object An object for which the method is defined.
 #' @param ... Additional arguments passed to the method.
+#' @return A numeric vector of values, either \eqn{F(x)} or \eqn{log(F(x))}.
+#'
+#' @examples
+#' # Example usage:
+#' data(lgnm)
+#' 
+#' # Evaluate for LCMLE object
+#' fit_LCMLE <- ic_LCMLE(lgnm)
+#' get_F_at_x(fit_LCMLE)
+#' 
+#' # Evaluate for UMLE object
+#' fit_UMLE <- ic_UMLE(lgnm)
+#' x = seq(0.001, 6, length.out = 1000)
+#' get_F_at_x(fit_UMLE, x = x)
 #' @export 
 get_F_at_x <- function(object, ...) {
   UseMethod("get_F_at_x")

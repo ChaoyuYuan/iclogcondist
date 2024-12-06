@@ -28,17 +28,3 @@ interval-censored data based on the unconstrained maximum likelihood estimate (M
 or its least concave majorant (LCM). 
 Alternatively, the user can provide a numeric vector of initial values.
 }
-\examples{
-# Example usage with default LCM initialization
-X <- matrix(c(0, 2, 1, 3, 2, Inf), ncol = 2, byrow = TRUE)
-init_vals <- initial_values(X)
-print(init_vals$phi_hat)
-
-# Example usage with MLE initialization
-init_vals <- initial_values(X, initial = "MLE")
-print(init_vals$phi_hat)
-
-# Example usage with custom numeric vector
-init_vals <- initial_values(X, initial = c(-1, -2, -3))
-print(init_vals$phi_hat)
-}

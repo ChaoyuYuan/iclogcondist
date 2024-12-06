@@ -31,8 +31,15 @@ In a simulation study, the user-specified distribution can correspond to the tru
 \examples{
 # Example usage
 data(lgnm)
-fit_LCMLE <- ic_LCMLE(X)
-fit_UMLE <- ic_UMLE(X)
-iclogcondist_visualization(X = lgnm, range = c(0, 10), fit_list = list("UMLE" = fit_UMLE,"LCMLE" = fit_LCMLE))
+fit_LCMLE <- ic_LCMLE(lgnm)
+fit_UMLE <- ic_UMLE(lgnm)
+iclogcondist_visualization(
+  X = lgnm,
+  range = c(0, 10),
+  fit_list = list(
+    "UMLE" = fit_UMLE,
+    "LCMLE" = fit_LCMLE
+  )
+)
 
 }

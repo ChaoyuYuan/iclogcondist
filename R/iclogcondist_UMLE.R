@@ -21,6 +21,7 @@
 #' \item{weight}{Vector of weights corresponding to each interval in the data.}
 #' \item{X}{The original interval-censored data matrix input.}
 #' @importFrom icenReg ic_np
+#' @importFrom utils tail
 #' @examples
 #' data(lgnm)
 #' result <- ic_UMLE(X = lgnm)

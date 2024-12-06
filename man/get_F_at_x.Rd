@@ -11,6 +11,24 @@ get_F_at_x(object, ...)
 
 \item{...}{Additional arguments passed to the method.}
 }
+\value{
+A numeric vector of values, either \eqn{F(x)} or \eqn{log(F(x))}.
+}
 \description{
-This is a generic function to compute \eqn{F(x)} for object class \code{iclogcondist}. For usage details, please refer to function \code{get_F_at_x.iclogcondist}
+Computes the value of the function \eqn{F(x)} for a given object of class \code{iclogcondist}. 
+This is a generic function to compute \eqn{F(x)} for object class \code{iclogcondist}. 
+For usage details, please refer to function \code{get_F_at_x.iclogcondist}
+}
+\examples{
+# Example usage:
+data(lgnm)
+
+# Evaluate for LCMLE object
+fit_LCMLE <- ic_LCMLE(lgnm)
+get_F_at_x(fit_LCMLE)
+
+# Evaluate for UMLE object
+fit_UMLE <- ic_UMLE(lgnm)
+x = seq(0.001, 6, length.out = 1000)
+get_F_at_x(fit_UMLE, x = x)
 }

@@ -24,13 +24,3 @@ This function constructs case II interval-censored data using the provided event
 Each individual's event time is either left-censored, right-censored, or interval-censored
 based on two survey times: the left and right bounds of the interval.
 }
-\examples{
-event_times <- c(2, 4, 5, 7)
-survey_times <- matrix(c(3, 5, 2, 6, 4, 8, 2, 5), ncol = 2, byrow = TRUE)
-case_II_X(event_times, survey_times)
-       [,1] [,2]
-# [1,]    0    3
-# [2,]    2    6
-# [3,]    4    8
-# [4,]    5  Inf
-}

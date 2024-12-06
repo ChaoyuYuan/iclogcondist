@@ -11,15 +11,6 @@
 #'         The first column is the left endpoint, and the second column is the right endpoint.
 #'         If the event time is before the survey time, the interval is \code{(0, survey_time]}.
 #'         If the event time is after the survey time, the interval is \code{(survey_time, Inf)}.
-#' @examples
-#' event_times <- c(2, 4, 5, 7)
-#' survey_times <- c(3, 3, 6, 8)
-#' current_status_X(event_times, survey_times)
-#' #      [,1] [,2]
-#' # [1,]    0    3
-#' # [2,]    3  Inf
-#' # [3,]    0    6
-#' # [4,]    0    8
 current_status_X <- function(event_times, survey_times) {
   # Input validation
   if (length(event_times) != length(survey_times)) stop("event_times and survey_times must be of equal length")
@@ -54,15 +45,6 @@ current_status_X <- function(event_times, survey_times) {
 #'         If the event time is before the left survey time, the interval is \code{(0, left survey time]}.
 #'         If the event time is after the right survey time, the interval is \code{(right survey time, Inf)}.
 #'         If the event time falls between the left and right survey times, the interval is \code{(left survey time, right survey time]}.
-#' @examples
-#' event_times <- c(2, 4, 5, 7)
-#' survey_times <- matrix(c(3, 5, 2, 6, 4, 8, 2, 5), ncol = 2, byrow = TRUE)
-#' case_II_X(event_times, survey_times)
-#'        [,1] [,2]
-#' # [1,]    0    3
-#' # [2,]    2    6
-#' # [3,]    4    8
-#' # [4,]    5  Inf
 case_II_X <- function(event_times, survey_times) {
   # Input validation
   if (length(event_times) != nrow(survey_times)) stop("event_times and survey_times must have the same number of rows")
@@ -148,6 +130,7 @@ case_II_X <- function(event_times, survey_times) {
 #' # Simulate data with a truncated Weibull distribution and case II interval censoring
 #' simulate_ic_data(n = 100, dist = "weibull", para1 = 2, para2 = 1, upper_bound = 5, case = 2)
 #' @export
+#' @importFrom stats runif
 #' 
 simulate_ic_data <- function(n, dist, para1, para2, upper_bound = Inf, C1_upper = 1, case = 2, 
                      rounding = FALSE, round_digit = 4) {

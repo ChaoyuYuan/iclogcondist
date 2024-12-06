@@ -78,7 +78,7 @@ result <- ic_LCMLE(X)
 # Print the estimated distribution function
 print(result$est$F_hat)
 ```
-For more details in usage examples, please refer to the [iclogcondist_Example.pdf](iclogcondist_Example.pdf) file.
+For more details in usage examples, please refer to the [iclogcondist_Example.pdf](https://github.com/ChaoyuYuan/iclogcondist/blob/main/iclogcondist_Example.pdf) file.
 
 
 ## License
